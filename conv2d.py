@@ -1,3 +1,7 @@
+"""
+uv run --python 3.14 --with tinygrad --with numpy conv2d.py
+PYTHONPATH=$HOME/w/cs/fun/tinygrad uv run --python 3.14 --with numpy conv2d.py
+"""
 from tinygrad import Tensor
 import numpy as np
 
@@ -39,8 +43,10 @@ def main():
     y_explicit = conv2d_explicit_broadcast(x, K, pad=pad)
     print(f"{y_explicit.uop.sink()=}")
 
-    yb = y_builtin.realize().numpy()
+    print("realized y diy")
     ye = y_explicit.realize().numpy() 
+    yb = y_builtin.realize().numpy()
+    print("realized y builtin")
     print(f"max diff:{np.abs(yb - ye).max()}")
 
 if __name__ == '__main__':
